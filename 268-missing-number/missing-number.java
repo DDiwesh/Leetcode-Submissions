@@ -1,17 +1,11 @@
 class Solution {
     public int missingNumber(int[] nums) {
         int l = nums.length;
-        int[] count = new int[l+1];
-        for(int i=0;i<l;i++){
-            count[nums[i]] = 1;
+        int sum = 0;
+        int tsum = (l*(l+1))/2;
+        for(int i:nums){
+            sum += i;
         }
-
-        for(int i=0;i<=l;i++){
-            if(count[i] != 1)
-                return i;
-        }
-
-        return -1;
-        
+        return tsum - sum;
     }
 }
