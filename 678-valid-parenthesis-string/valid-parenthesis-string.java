@@ -1,35 +1,30 @@
 class Solution {
-    public boolean checkValidString(String s) {
-        int[][] dp = new int[s.length()][s.length()];
-        for(int[] d:dp){
-            Arrays.fill(d,-1);
-        }
-        char[] ch = s.toCharArray();
-        return checkValid(ch,0,0,dp);
+        public boolean checkValidString(String s) {
         
-    }
-    
-    public boolean checkValid(char[] c, int openCount, int i, int[][] valid){
-        if(i == c.length){
-            return openCount == 0;
-        }
-        if(valid[i][openCount] != -1) return valid[i][openCount]==1;
-        
-        boolean isValid = false;
-        if(c[i] == '*'){
-            isValid = isValid | checkValid(c,openCount+1,i+1,valid);
-            if(openCount > 0)
-                isValid = isValid | checkValid(c,openCount-1,i+1,valid);
-            isValid = isValid | checkValid(c,openCount,i+1,valid);
-        }else{
-            if(c[i] == '('){
-                isValid = isValid | checkValid(c,openCount+1,i+1,valid);
-            }else if(openCount>0){
-                isValid |= checkValid(c,openCount-1,i+1,valid);
+        int openCount = 0, closeCount = 0,length=s.length()-1;
+        // Traverse the string from both ends simultaneously
+        for (int i = 0; i <= length; i++) {
+            // Count open parentheses or asterisks
+            if (s.charAt(i) == '(' || s.charAt(i) == '*') {
+                openCount++;
+            } else {
+                openCount--;
+            }
+            
+            // Count close parentheses or asterisks
+            if (s.charAt(length - i) == ')' || s.charAt(length - i) == '*') {
+                closeCount++;
+            } else {
+                closeCount--;
+            }
+            
+            // If at any point open count or close count goes negative, the string is invalid
+            if (openCount < 0 || closeCount < 0) {
+                return false;
             }
         }
         
-        valid[i][openCount] = isValid?1:0;
-        return isValid;
+        return true;
+        
     }
 }
